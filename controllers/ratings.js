@@ -2,18 +2,22 @@ const Rating = require('../models/Rating');
 
 const RatingController = {
     save: async rating => {
-        return await new Rating({
-            ranking: rating.ranking
-        }).save();
+        let r = await RatingController.findOne(rating);
+        if (!r)
+            return await new Rating({
+                ranking: rating.ranking
+            }).save();
+        else
+            return r;
     },
     findById: async _id => {
         return await Rating.findOne(_id).exec();
     },
-    find: async criteria => {
-        return await Rating.find(criteria).exec();
-    },
     findOne: async criteria => {
         return await Rating.findOne(criteria).exec();
+    },
+    findOneAndUpdate: async (criteria, rating) => {
+        return await Rating.findOneAndUpdate(criteria, rating).exec();
     }
 }
 

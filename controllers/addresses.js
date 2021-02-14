@@ -11,10 +11,13 @@ const AddressController = {
         }).save();
     },
     findById: async _id => {
-        return await Address.findOne(_id).exec();
+        return await Address.findById(_id).exec();
     },
-    find: async criteria => {
-        return await Address.find(criteria).exec();
+    findOne: async criteria => {
+        return await Address.findOne(criteria).exec();
+    },
+    findOneAndUpdate: async (criteria, address) => {
+        return await Address.findOneAndUpdate(criteria, address).exec();
     }
 }
 

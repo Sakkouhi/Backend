@@ -1,13 +1,7 @@
 const Contact = require('../models/Contact');
-const {AddressController} = require('./addresses');
 
 const ContactController = {
     save: async contact => {
-        const address = await AddressController.find(contact.address);
-        if (!address) {
-            const address = await AddressController.save(contact.address);
-        }
-        contact.address = address._id;
         return await new Contact({
             type: contact.type,
             address: contact.address,
@@ -21,18 +15,22 @@ const ContactController = {
             .populate('address')
             .exec();
     },
-    find: async criteria => {
-        if (criteria && criteria.address)
-            delete criteria.address;
+    findOne: async contact => {
         return await Contact
-            .find(criteria)
+            .findOne({
+                type: contact.type,
+                email: contact.email,
+                mobile_phone_number: contact.mobile_phone_number
+            })
             .exec();
     },
-    findOne: async criteria => {
-        if (criteria && criteria.address)
-            delete criteria.address;
+    findOneAndUpdate: async (criteria, contact) => {
         return await Contact
-            .findOne(criteria)
+            .findOneAndUpdate(criteria,{
+                    type: contact.type,
+                    email: contact.email,
+                    mobile_phone_number: contact.mobile_phone_number
+                })
             .exec();
     }
 }
